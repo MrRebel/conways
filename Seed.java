@@ -18,12 +18,13 @@ public class Seed {
     public boolean get(int row, int col) {
         boolean rowBool = false;
         boolean colBool = false;
-        for (int i = 0; i < coords.get(0).size(); i++) {
-            if (coords.get(0).get(i) == row) rowBool = true;
-        }
         for (int i = 0; i < coords.get(1).size(); i++) {
+            if (coords.get(0).get(i) == row) rowBool = true;
             if (coords.get(1).get(i) == col) colBool = true;
+            if (rowBool && colBool) return true;
+            rowBool = false;
+            colBool = false;
         }
-        return rowBool && colBool;
+        return false;
     }
 }

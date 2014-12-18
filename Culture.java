@@ -25,4 +25,42 @@ public class Culture {
         }
         return str;
     }
+
+    public void tick() {
+        tick(1);
+    }
+
+    public void tick(int howMany) {
+        boolean[][] temp = new boolean[culture.length][culture[0].length];
+        for (int i = 0; i < culture.length; i++) {
+            for (int j = 0; j < culture[i].length; j++) {
+                int neighbors = 0;
+                boolean upSafe = i - 1 >= 0;
+                boolean downSafe = i + 1 < culture.length;
+                boolean leftSafe = j - 1 >= 0;
+                boolean rightSafe = j + 1 < culture[i].length;
+                boolean upLeftSafe = upSafe && leftSafe;
+                boolean upRightSafe = upSafe && rightSafe;
+                boolean downRightSafe = downSafe && rightSafe;
+                boolean downLeftSafe = downSafe && leftSafe;
+                if (upLeftSafe    && culture[i-1][j-1]) neighbors++;
+                if (upSafe        && culture[i-1][j])   neighbors++;
+                if (upRightSafe   && culture[i-1][j+1]) neighbors++;
+                if (rightSafe     && culture[i][j+1])   neighbors++;
+                if (downRightSafe && culture[i+1][j+1]) neighbors++;
+                if (downSafe      && culture[i+1][j])   neighbors++;
+                if (downLeftSafe  && culture[i+1][j-1]) neighbors++;
+                if (leftSafe      && culture[i][j-1])   neighbors++;
+                if (neighbors < 2 || neighbors > 3) temp[i][j] = false;
+                if ( (neighbors == 2 || neighbors == 3) && culture[i][j] ) temp[i][j] = true;
+                if ( !culture[i][j] && neighbors == 3) temp[i][j] = true;
+            }
+        }
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp[i].length; j++) {
+                culture[i][j] = temp[i][j];
+            }
+        }
+        if (howMany > 1) tick(howMany - 1);
+    }
 }
