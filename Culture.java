@@ -1,6 +1,9 @@
 public class Culture {
     private boolean[][] culture;
 
+    private boolean hasListener = false;
+    private TickListener listener;
+
     public Culture(Seed seed, int rows, int cols) {
         culture = new boolean[rows][cols];
         for (int i = 0; i < culture.length; i++) {
@@ -9,6 +12,14 @@ public class Culture {
                 else culture[i][j] = false;
             }
         }
+    }
+
+    public int getRows() {
+        return culture.length;
+    }
+
+    public int getCols() {
+        return culture[0].length;
     }
 
     public String toString() {
@@ -24,6 +35,11 @@ public class Culture {
             }
         }
         return str;
+    }
+
+    public boolean isAlive(int row, int col) {
+        if ( (row >= 0 && row < culture.length) && (col >= 0 && col < culture[row].length) ) return culture[row][col];
+        else return false;
     }
 
     public void tick() {
@@ -61,6 +77,12 @@ public class Culture {
                 culture[i][j] = temp[i][j];
             }
         }
+        if (hasListener) listener.tickPerformed();
         if (howMany > 1) tick(howMany - 1);
+    }
+
+    public void addTickListener(TickListener listener) {
+        this.hasListener = true;
+        this.listener = listener;
     }
 }
