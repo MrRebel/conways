@@ -1,3 +1,2 @@
-Conway's Game of Life
-=====================
-A Java implementation of Conway's Game of Life for school.
+# Conway's Game of Life
+This is a Java implementation of [Conway's Game of Life](http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for school written by @lachm and @MrRebel.
