@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import java.util.Scanner;
 import java.awt.Dimension;
 
@@ -11,7 +12,12 @@ public class Conways {
     private static int FRAME_HEIGHT = 750;
 
     public static void main(String[] args) {
-        testFrame(gliderFromWiki());
+        Seed seed = getSeedFromCommandLineArgs(args);
+        if (seed == null) {
+            JOptionPane.showMessageDialog(null, "No seed given through command-line arguments or the arguments are misformatted.", "Seed Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+        testFrame(seed);
     }
 
     private static void testFrame(Seed seed) {
@@ -54,6 +60,26 @@ public class Conways {
             culture.tick();
             input = in.nextLine();
         } while (!input.equalsIgnoreCase("q"));
+    }
+
+    private static Seed getSeedFromCommandLineArgs(String[] args) {
+        if (args.length < 1) return null;
+        Seed seed = new Seed();
+        for (String arg: args) {
+            String newarg = "";
+            for (int i = 0; i < arg.length(); i++) {
+                if (arg.charAt(i) != ' ' && arg.charAt(i) != '(' && arg.charAt(i) != ')') newarg += arg.charAt(i);
+            }
+            arg = newarg;
+            String[] strparts = arg.split(",");
+            if (strparts.length != 2) return null;
+            int[] intparts = new int[2];
+            for (int i = 0; i < intparts.length; i++) {
+                intparts[i] = Integer.parseInt(strparts[i]);
+            }
+            seed.add(intparts[0]-1, intparts[1]-1);
+        }
+        return seed;
     }
 
     private static Seed beaconFromWiki() {
